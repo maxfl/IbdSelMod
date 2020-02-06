@@ -5,6 +5,7 @@
 from load import ROOT as R
 from dayabay_filename import *
 import os
+from os import path
 
 def process_file(filename, args):
     filedata = parse_dayabay_filename(filename)
@@ -41,6 +42,27 @@ def main(args):
         process_file(fname, args)
 
 def output_filename(input_filename, common_root, output_root, suffixes=()):
+    if not input_filename.startswith(common_root):
+        raise Exception('Invalid input_filename or invalid file root')
+
+    input_path, basename= path.split(input_filename)
+
+    ret = ()
+    for suffix in suffixes:
+        dirname = os.path.join(output_root, suffix)
+
+        try:
+            os.makedirs(dirname)
+        except OSError:
+            pass
+        else:
+            print('Create output folder:', dirname)
+
+        ret += os.path.join(dirname, basename),
+
+    return ret
+
+def output_filename_wcommon(input_filename, common_root, output_root, suffixes=()):
     if not input_filename.startswith(common_root):
         raise Exception('Invalid input_filename or invalid file root')
 
