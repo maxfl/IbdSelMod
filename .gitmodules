@@ -1,0 +1,4 @@
+[submodule "IbdSel"]
+	path = IbdSel
+	url = https://github.com/maxfl/IbdSel.git
+	branch = tmp
