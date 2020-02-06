@@ -7,7 +7,11 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 import numpy as np
 error = np.zeros(1, dtype='int32')
-for line in (".L IbdSel/selector/stage1/stage1_main.cc+", ".L IbdSel/selector/stage2/stage2_main.cc+"):
+files_to_compile = [
+        ".L IbdSel/selector/stage1/stage1_main.cc+",
+        ".L IbdSel/selector/stage2/stage2_main.cc+"
+        ]
+for line in files_to_compile:
     ROOT.gROOT.ProcessLine(line, error)
     if error[0]:
         raise Exception('Error processing: '+line)
