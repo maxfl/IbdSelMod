@@ -1,0 +1,3 @@
+*.pyc
+.ccls-cache
+.envrc
