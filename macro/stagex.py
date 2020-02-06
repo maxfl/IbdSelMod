@@ -22,7 +22,7 @@ def process_file(filename, args):
         ofile = ofile1
         if args.verbose:
             print('Read {}, write {}'.format(ifile, ofile))
-        R.stage1_main(ifile, ofile, period, site)
+        args.fcn_stage1(ifile, ofile, period, site)
     else:
         ifile = ofile1
         ofile = ofile2
@@ -30,13 +30,18 @@ def process_file(filename, args):
             print('Read {}, write {}'.format(ifile, ofile))
 
         stagename = 'stage2_main'
-        R.stage2_main(args.cfg, ifile, ofile, period, 0, site)
+        args.fcn_stage2(args.cfg, ifile, ofile, period, 0, site)
 
     print('Done processing file', ifile)
     print('Write output file', ofile)
 
 def main(args):
     args.common_root = find_common_root(args.input)
+
+    args.fcn_stage1 = getattr(R, args.function1)
+    args.fcn_stage2 = getattr(R, args.function2)
+    print('Stage 1 function', args.function1)
+    print('Stage 2 function', args.function2)
 
     for fname in args.input:
         process_file(fname, args)
@@ -96,6 +101,8 @@ if __name__ == "__main__":
     parser.add_argument('-o', '--output-folder', required=True, help='output file name for stage ')
     parser.add_argument('--cfg', required=True, help='configuration file')
     parser.add_argument('-v', '--verbose', action='count', help='verbosity level')
+    parser.add_argument('-f1', '--function1', default='stage1_main', help='Stage 1 function name')
+    parser.add_argument('-f2', '--function2', default='stage2_main', help='Stage 2 function name')
 
     main(parser.parse_args())
 
